@@ -1,8 +1,86 @@
+  /* sign in.css */
+
 body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
+  font-family: Arial, sans-serif;
+  width: 100%;
+  background: url('SIGN.jpg'); /* Replace 'your-image.jpg' with your image file path */
+  background-size: cover;
+  background-position: center;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* Sign-in Form Container */
+.signinform {
+  background-color: rgba(206, 199, 199, 0.9); /* Semi-transparent background */
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 350px;
+  padding: 20px;
+  text-align: center;
+  
+}
+
+/* Title */
+#sign\ in {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333333;
+  margin-bottom: 20px;
+}
+
+/* Labels and Inputs */
+label {
+  display: block;
+  font-size: 14px;
+  font-weight: bold;
+  color: #555555;
+  margin-bottom: 5px;
+  text-align: left;
+}
+
+input[type="username"], input[type="password"] {
+  width: calc(100% - 20px);
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+/* Submit Button */
+button {
+  background-color: #007bff;
+  color: #ffffff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+/* Adjust margins for divs */
+#info > div {
+  margin-bottom: 15px;
+}
+
+/* Responsive Design */
+@media (max-width: 400px) {
+  .signinform {
+      width: 90%;
   }
 
-#info{
-    
+  input[type="username"], input[type="password"] {
+      width: 100%;
+  }
 }

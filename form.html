@@ -16,6 +16,9 @@
   <div>
     <p>PLEASE PROVIDE ALL THE REQUIRED DETAILS CORRECTLY.</p>
   </div>
+  <div>
+    <h4>-----------------------------PERSONAL DETAILS-----------------------</h4>
+  </div>
   <form id="organDonationForm" onsubmit="submitForm(event)">
     <div class="form-group">
       <label for="name">Name:</label>
@@ -25,6 +28,28 @@
     <div class="form-group">
       <label for="lastname">Last Name:</label>
       <input type="text" id="nextOfKin" name="nextOfKin" required placeholder="enter your last name">
+    </div>
+    <div class="form-group">
+      <label for="dob">Date of Birth:</label>
+      <input type="date" id="dob" name="dob" required>
+    </div>
+    <div class="form-group">
+      <label for="phone">Phone Number:</label>
+      <input type="tel" id="phone" name="phone" required placeholder="enter your phone number">
+    </div>
+    <div class="form-group">
+      <label for="gender">Gender:</label>
+          <select name="gender" id="gender" required>
+              <option value="" disabled selected>Select your gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+          </select>
+    <label>
+    </div>
+    <!---addressss ka column if needed-->
+    <div>
+      <h4>-----------------------------IDENTIFICATION DETAILS-----------------------</h4>
     </div>
     <div>
       <label for="id-type">Select ID Proof Type:</label>
@@ -40,38 +65,7 @@
         <label for="id-proof">Upload ID Proof:</label>
         <input type="file" id="id-proof" name="id-proof" accept=".jpg, .jpeg, .png, .pdf" required>
     </div>
-    <div class="form-group">
-      <label for="phone">Phone Number:</label>
-      <input type="tel" id="phone" name="phone" required placeholder="enter your phone number">
-    </div>
-    <div>
-    <label for="gender">Gender:</label>
-        <select name="gender" id="gender" required>
-            <option value="" disabled selected>Select your gender</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-            <option value="Other">Other</option>
-        </select><br><br>
-    <label>
-    </div>
-    <div><label for="blood-group">Blood Group:</label>
-        <select name="blood-group" id="blood-group" required>
-            <option value="" disabled selected>Select your blood group</option>
-            <option value="A+">A+</option>
-            <option value="A-">A-</option>
-            <option value="B+">B+</option>
-            <option value="B-">B-</option>
-            <option value="AB+">AB+</option>
-            <option value="AB-">AB-</option>
-            <option value="O+">O+</option>
-            <option value="O-">O-</option>
-        </select>
-    </div>
-    <br>
-    <div>
-      <label for="dob">Date of Birth:</label>
-      <input type="date" id="dob" name="dob" required>
-    </div><br>
+    
 <!----
     <div class="form-group">
       <label for="donationType">Type of Donating:</label>
@@ -90,26 +84,73 @@
       <input type="tel" id="otherNumber" name="otherNumber">
     </div>
     -->
-    <BR>
-    <DIV>
-      <label>------------------MEDICAL DETAILS----------------------</label>
-    </div><BR>
     <div>
-      <label for="height">Height (in cm):</label>
-     c
+      <h4>-----------------Emergency Contact-----------------------------</h4>
     </div>
-    <div>
-      <label for="weight">Weight (in kg):</label>
-      <input type="weight" id="weight" name="weight" required placeholder="Enter your weight">
+    <div class="form-group">
+      <label>Contact Name</label>
+      <input type="text" id="emergencyName" name="emergencyName" required placeholder="enter name">
     </div>
-    <div>
-      <label for="bmi">BMI:</label>
-      <!---calculate bmi from height and weight-->
+    <div class="form-group">
+      <label>Relationship</label>
+      <input type="text" id="relation" name="relation" required placeholder="enter the relationship">
     </div>
-    <div>
-      <label for="medicalCondition">Medical Condition:</label>
+    <div class="form-group">
+      <label>Contact Number</label>
+      <input type="ph" id="relationcontct" name="relationcontact" required placeholder="enter their number">
+    </div>
 
+    <DIV>
+      <h4>----------------------HEALTH DETAILS---------------------------</h4>
     </div>
+    <div class="form-group">
+      <label for="blood-group">Blood Group:</label>
+      <select name="blood-group" id="blood-group" required>
+          <option value="" disabled selected>Select your blood group</option>
+          <option value="A+">A+</option>
+          <option value="A-">A-</option>
+          <option value="B+">B+</option>
+          <option value="B-">B-</option>
+          <option value="AB+">AB+</option>
+          <option value="AB-">AB-</option>
+          <option value="O+">O+</option>
+          <option value="O-">O-</option>
+      </select>
+  </div>
+    
+    <div class="form-group">
+   
+      <label for="medicalHistory">Medical History</label>
+      <select id="medicalHistory" name="medicalHistory">
+          <option value="None">None</option>
+          <option value="Chronic Illness">Chronic Illness</option>
+          <option value="Surgery">Surgery</option>
+          <option value="BP">Blood Pressure</option>
+          <option value="Sugar">Diebetics</option>
+          <option value="Other">Other</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="currentMedications">Current Medications</label>
+      <select id="currentMedications" name="currentMedications">
+          <option value="None">-select-</option>
+          <option value="yes">YES</option>
+          <option value="no">NO</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="allergies">Allergies</label>
+      <select id="allergies" name="allergies">
+          <option value="None">-select-</option>
+          <option value="Pollen">Pollen</option>
+          <option value="Dust">Dust</option>
+          <option value="Food">Food</option>
+          <option value="Other">Other</option>
+      </select>
+    </div>
+
+
+    <div><h4>-------------set a 6-digit password----------------------</h4></div>
     <div class="form-group">
       <label for="Password">Password:</label>
       <input type="password" id="password" placeholder="Set a Password " required >
