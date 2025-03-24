@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kidney Donation Registration</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: url('https://via.placeholder.com/1500x800?text=Kidney+Donation') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .form-container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        label {
+            font-weight: bold;
+            margin-top: 10px;
+            display: block;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .consent {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .consent input {
+            margin-right: 10px;
+        }
+
+        .btn {
+            width: 100%;
+            background: #28a745;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px;
+            font-size: 1.1em;
+        }
+
+        .btn:hover {
+            background: #218838;
+        }
+
+        .error {
+            color: red;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="form-container">
+        <h2>Kidney Donation Registration</h2>
+        <form id="donationForm">
+            <label for="name">Full Name</label>
+            <input type="text" id="name" name="name" required>
+            <div class="error" id="nameError"></div>
+
+            <label for="age">Age</label>
+            <input type="number" id="age" name="age" min="18" max="65" required>
+            <div class="error" id="ageError"></div>
+
+            <label for="bloodType">Blood Type</label>
+            <select id="bloodType" name="bloodType" required>
+                <option value="">Select Blood Type</option>
+                <option value="A+">A+</option>
+                <option value="A-">A-</option>
+                <option value="B+">B+</option>
+                <option value="B-">B-</option>
+                <option value="O+">O+</option>
+                <option value="O-">O-</option>
+                <option value="AB+">AB+</option>
+                <option value="AB-">AB-</option>
+            </select>
+            <div class="error" id="bloodTypeError"></div>
+
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+            <div class="error" id="emailError"></div>
+
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="phone" required pattern="[0-9]{10}">
+            <div class="error" id="phoneError"></div>
+
+            <div class="consent">
+                <input type="checkbox" id="consent" required>
+                <label for="consent">I agree to donate my kidney.</label>
+            </div>
+            <div class="error" id="consentError"></div>
+
+            <button type="submit" class="btn">Register</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById("donationForm").addEventListener("submit", function(event) {
+            let isValid = true;
+
+            // Name validation
+            const name = document.getElementById("name").value.trim();
+            if (name === "") {
+                document.getElementById("nameError").innerText = "Name is required.";
+                isValid = false;
+            } else {
+                document.getElementById("nameError").innerText = "";
+            }
+
+            // Age validation
+            const age = document.getElementById("age").value;
+            if (age < 18 || age > 65 || age === "") {
+                document.getElementById("ageError").innerText = "Age must be between 18 and 65.";
+                isValid = false;
+            } else {
+                document.getElementById("ageError").innerText = "";
+            }
+
+            // Blood Type validation
+            const bloodType = document.getElementById("bloodType").value;
+            if (bloodType === "") {
+                document.getElementById("bloodTypeError").innerText = "Please select your blood type.";
+                isValid = false;
+            } else {
+                document.getElementById("bloodTypeError").innerText = "";
+            }
+
+            // Email validation
+            const email = document.getElementById("email").value.trim();
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(email)) {
+                document.getElementById("emailError").innerText = "Enter a valid email.";
+                isValid = false;
+            } else {
+                document.getElementById("emailError").innerText = "";
+            }
+
+            // Phone number validation
+            const phone = document.getElementById("phone").value.trim();
+            const phonePattern = /^[0-9]{10}$/;
+            if (!phonePattern.test(phone)) {
+                document.getElementById("phoneError").innerText = "Enter a valid 10-digit phone number.";
+                isValid = false;
+            } else {
+                document.getElementById("phoneError").innerText = "";
+            }
+
+            // Consent validation
+            const consent = document.getElementById("consent").checked;
+            if (!consent) {
+                document.getElementById("consentError").innerText = "You must agree to proceed.";
+                isValid = false;
+            } else {
+                document.getElementById("consentError").innerText = "";
+            }
+
+            if (!isValid) {
+                event.preventDefault(); // Stop form submission if there are errors
+            } else {
+                alert("Registration successful! Thank you for signing up.");
+            }
+        });
+    </script>
+
+</body>
+</html>
