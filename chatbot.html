@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Donation Assistant Chatbot</title>
+<style>
+body{ 
+  font-family: Arial, sans-serif;
+  margin: 10px; 
+  background-color: #f6f6f6;
+  overflow: hidden;
+}
+
+#chatbox {
+  max-width: 300px;
+  margin: auto;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  height: 400px; /* Increased for better visibility */
+  overflow: hidden;
+  position: fixed; /* Makes it float relative to the viewport */
+  bottom: 20px;    /* Distance from the bottom of the viewport */
+  right: 20px;     /* Distance from the right of the viewport */
+  z-index: 9999;   /* Ensures it stays on top of other content */
+}
+
+#chat-toggle-btn {
+  z-index: 10000;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+}
+
+#messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px 10px 10px 10px; /* bottom padding for spacing from input */
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+}
+
+#messages div {
+  max-width: 75%;
+  padding: 10px 15px;
+  border-radius: 20px;
+  word-wrap: break-word;
+}
+
+.user-message {
+  background-color:rgb(135,206,235);
+  align-self: flex-end;
+  color: #000;
+}
+
+.bot-message {
+  background-color: rgb(247, 246, 223); /* cream */
+  align-self: flex-start;
+  color: #000;
+}
+
+form {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background: #fff;
+  border-top: 1px solid #ccc;
+}
+
+
+#userInput {
+  width: 100%;
+  padding: 12px 15px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+#sendBtn {
+  background-color:rgb(135,206,235);
+  border: none;
+  color: white;
+  font-size: 20px;
+  padding: 0 20px;
+  margin-left: 10px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  width: 44px;
+}
+
+#sendBtn:hover {
+  background-color: #ff1493;
+}
+  </style>
+</head>
+<body>
+  <div id="chatbox">
+    <div id="messages"></div>
+    <form id="chatForm">
+      <input type="text" id="userInput" placeholder="Type your message..." autocomplete="off" required />
+      <button type="submit" id="sendBtn">→</button>
+    </form>
+  </div>
+
+  <script>
+    const chatForm = document.getElementById("chatForm");
+    const userInput = document.getElementById("userInput");
+    const messages = document.getElementById("messages");
+
+    chatForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const message = userInput.value.trim();
+      if (!message) return;
+
+      appendMessage(message, "user-message");
+      userInput.value = "";
+      userInput.focus();
+
+      // Send to backend
+      try {
+        const res = await fetch("/chatbot", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message }),
+        });
+        const data = await res.json();
+        appendMessage(data.reply, "bot-message");
+      } catch (err) {
+        appendMessage("Sorry, something went wrong. Please try again.", "bot-message");
+      }
+    });
+
+    function appendMessage(text, className) {
+      const msgDiv = document.createElement("div");
+      msgDiv.className = className;
+      msgDiv.textContent = text;
+      messages.appendChild(msgDiv);
+      messages.scrollTop = messages.scrollHeight;
+    }
+  </script>
+</body>
+</html>
