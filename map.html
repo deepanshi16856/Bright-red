@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Donor-Recipient Match Map</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+  <style>
+    #map {
+      height: 600px;
+      width: 100%;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      padding: 10px;
+      margin: 0;
+    }
+    h2 {
+      text-align: center;
+    }
+    #legend{
+    position: absolute;
+    bottom: 30px;
+    right: 30px;
+    background: white;
+    padding: 10px 15px;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.3);
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    z-index: 1000;"
+    }
+  </style>
+</head>
+<body>
+  <h2>Donor-Recipient Match Map</h2>
+
+  <!-- Legend -->
+  <div id="legend">
+    <h4 style="margin-top: 0; margin-bottom: 8px;">Legend</h4>
+    <div><span style="background: blue; width: 15px; height: 15px; display: inline-block; margin-right: 8px;"></span> Donor</div>
+    <div><span style="background: red; width: 15px; height: 15px; display: inline-block; margin-right: 8px;"></span> Recipient</div>
+    <div style="margin-top: 8px; font-style: italic; color: #555;">
+      Distance is approximate in kilometers
+    </div>
+  </div>
+
+  <!-- Map Container -->
+  <div id="map"></div>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+  <!-- Your Script -->
+<script>
+  const showMatch = {{ show_match | default(false) | tojson }};
+  const showAll = {{ show_all | default(false) | tojson }};
+
+  const map = L.map('map').setView([20.5937, 78.9629], 5);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap contributors',
+  }).addTo(map);
+
+  let fetchUrl = '/get_matches';
+  if (!showMatch && !showAll) {
+    fetchUrl = '/get_user_location';
+  }
+
+  fetch(fetchUrl)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(data => {
+      if ((showMatch || showAll) && Array.isArray(data)) {
+        if (data.length === 0) {
+          alert('No matches found nearby.');
+          return;
+        }
+
+        data.forEach(pair => {
+          if (!pair.donor || !pair.recipient) return;
+
+          const donorIcon = new L.Icon({
+            iconUrl: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+            iconSize: [32, 32],
+            iconAnchor: [16, 32],
+            popupAnchor: [0, -32],
+          });
+
+          const recipientIcon = new L.Icon({
+            iconUrl: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png',
+            iconSize: [32, 32],
+            iconAnchor: [16, 32],
+            popupAnchor: [0, -32],
+          });
+
+          const donorMarker = L.marker(
+            [pair.donor.latitude, pair.donor.longitude],
+            { icon: donorIcon }
+          ).addTo(map);
+          donorMarker.bindPopup(`
+            <strong>Donor</strong><br>
+            Name: ${pair.donor.name}<br>
+            Organ: ${pair.donor.organ}<br>
+            Blood Group: ${pair.donor.blood_group}
+          `);
+
+          const recipientMarker = L.marker(
+            [pair.recipient.latitude, pair.recipient.longitude],
+            { icon: recipientIcon }
+          ).addTo(map);
+          recipientMarker.bindPopup(`
+            <strong>Recipient</strong><br>
+            Name: ${pair.recipient.name}<br>
+            Organ: ${pair.recipient.organ}<br>
+            Blood Group: ${pair.recipient.blood_group}
+          `);
+
+          const latlngs = [
+            [pair.donor.latitude, pair.donor.longitude],
+            [pair.recipient.latitude, pair.recipient.longitude],
+          ];
+          const polyline = L.polyline(latlngs, { color: 'green' }).addTo(map);
+          polyline.bindPopup(`Distance: ${pair.distance_km} km`);
+        });
+
+      } else if (data && data.user) {
+        const user = data.user;
+        const userIcon = new L.Icon({
+          iconUrl: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+          iconSize: [32, 32],
+          iconAnchor: [16, 32],
+          popupAnchor: [0, -32],
+        });
+
+        const marker = L.marker([user.latitude, user.longitude], { icon: userIcon }).addTo(map);
+        marker.bindPopup(`You are here`);
+        map.setView([user.latitude, user.longitude], 8);
+
+      } else {
+        alert('Unexpected data received from server.');
+      }
+    })
+    .catch(error => {
+      console.error('Error loading map data:', error);
+      alert('Failed to load map data. Please try again later.');
+    });
+</script>
+
+
+</body>
+</html>
